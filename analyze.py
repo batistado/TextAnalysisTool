@@ -1,6 +1,7 @@
 import argparse
 import os
-from pprint import pprint
+import traceback
+import sys
 import multiprocessing as mp
 
 from Analyzers.file_analyzer import FileAnalyzer, TextAnalyzer
@@ -50,7 +51,14 @@ class Analyzer(BaseInit):
             self.process_files(files)
 
         self.merge_stats()
-        pprint(self.full_stats)
+
+    def get_word_stats(self, word):
+        word_lower = word.lower()
+
+        if word_lower in self.full_stats:
+            return self.full_stats[word_lower]
+
+        return None
 
 
 if __name__ == '__main__':
@@ -59,4 +67,24 @@ if __name__ == '__main__':
     parser.add_argument('--essay', '-e', action='store_true', help='Analyze from pre-defined essays')
     parser.add_argument('--files', '-f', action='store', nargs='+', help='Analyze from a list of specified files')
     args = parser.parse_args()
-    Analyzer(args.sentence, args.essay, args.files)
+
+    try:
+        analyzer = Analyzer(args.sentence, args.essay, args.files)
+
+        while True:
+            word = input('Enter a word to info: ')
+            word_stat = analyzer.get_word_stats(word)
+
+            if word_stat:
+                print('WORD STATISTICS: {}'.format(word))
+                print('Category: {}'.format(word_stat['category']))
+                print('Occurences: {}'.format(word_stat['count']))
+                print('Meaning: {}'.format(word_stat['meaning']))
+                print()
+
+            else:
+                print('Sorry. Word "{}" could not be found'.format(word))
+
+    except Exception as ex:
+        traceback.print_exc()
+        sys.exit('Error while loading app: {}'.format(ex))
