@@ -41,10 +41,11 @@ Using the word lists from the References section, generate the following statist
 -   List and count words in short-length category.
 -	List and count words in medium-length category.
 -	List and count words in long-length category.
--	List and count words that were not found in any of the lists.
-Bonus Functionality
+-	List and count words that were not found in any of the lists.<br/>
 
--	Parallelize essay analysis up to a factor of 4.
+#### Bonus Functionality
+
+-	Parallelise essay analysis up to a factor of 4.
 -	Create a single word cache across all four documents.
 -	Create a cross-essay analysis.
        -	List and count common words.
